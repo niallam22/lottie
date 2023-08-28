@@ -1,0 +1,63 @@
+Next auth 
+https://www.youtube.com/watch?v=w2h54xz6Ndw&t=353s&ab_channel=DaveGray
+
+route handler
+in the api/auth/[...nextauth] catch all route nextauth is exported as a GET and POST 
+in the options need to fetch the user from the db and encrypt/decrypt password etc
+
+if you need to authorise a client component you need to use provider context (see end of video) but its better to have client components as children of server components where the client components are only used for client interaction
+
+
+middleware is added in the src directory to apply auth to specified routes
+
+2 other options to protect pages are:
+
+1st option  if no session redirect to signin page and include callbackUrl to serverx so once signed in you return back to server page
+
+//serverX page.jsx
+import { options } from "../api/auth/[...nextauth]/options"
+import { getServerSession } from "next-auth/next"
+import UserCard from "../components/UserCard"
+import { redirect } from "next/navigation"
+
+export default async function ServerPage() {
+    const session = await getServerSession(options)
+
+    if (!session) {
+        redirect('/api/auth/signin?callbackUrl=/serverx')
+    }
+
+    return (
+        <section className="flex flex-col gap-6">
+            <UserCard user={session?.user} pagetype={"Server"} />
+        </section>
+    )
+
+}
+
+
+home route page.jsx
+2nd option use logic to determine what to display if the session exists or not
+import { options } from "./api/auth/[...nextauth]/options"
+import { getServerSession } from "next-auth/next"
+import UserCard from "./components/UserCard"
+
+export default async function Home() {
+  const session = await getServerSession(options)
+
+  return (
+    <>
+      {session ? (
+        <UserCard user={session?.user} pagetype={"Home"} />
+      ) : (
+        <h1 className="text-5xl">You Shall Not Pass!</h1>
+      )}
+    </>
+  )
+}
+
+
+---
+Image retrival from auth provide 
+set up remote patterns in next.config.js to be able to recieve the images
+
