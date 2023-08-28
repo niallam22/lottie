@@ -8,6 +8,15 @@ import bcrypt from "bcryptjs";
 export const options = {
     providers: [
         GitHubProvider({
+          profile(profile) {
+            //console.log(profile)
+            return {
+                ...profile,
+                role: profile.role ?? "user",
+                id: profile.id.toString(),
+                image: profile.avatar_url,
+            }
+        },
             clientId: process.env.GITHUB_ID,
             clientSecret: process.env.GITHUB_SECRET,
         }),
@@ -28,7 +37,6 @@ export const options = {
             // },
             async authorize(credentials) {
                 const { email, password } = credentials;
-                console.log('credentials: ', credentials)
         
                 try {
                   await connectMongoDB();
@@ -49,24 +57,25 @@ export const options = {
                   console.log("Error: ", error);
                 }
               },
-            // async authorise(credentials){
-            //     //fetch and authorise user data....
-
-            //     //hard code test user
-            //     const user = {id: '01', name: "test", password: "nextauth" }
-
-            //     if( credentials.username === user.name && credentials.password === password){
-            //       return user  
-            //     } else {
-            //         return null
-            //     }
-
-            // }
         }),
     ],
-    session: {
-        strategy: "jwt",
-      },
+  //persist the user's role
+  //jwt persists user on the server
+  callbacks: {
+    // Ref: https://authjs.dev/guides/basics/role-based-access-control#persisting-the-role
+    async jwt({ token, user }) {
+        if (user) token.role = user.role
+        return token
+    },
+    // Session required to persist the role in client components
+    async session({ session, token }) {
+        if (session?.user) session.user.role = token.role
+        return session
+    }
+  },
+    // session: {
+    //     strategy: "jwt",
+    //   },
       secret: process.env.NEXTAUTH_SECRET,
       pages: {
         signIn: "/",

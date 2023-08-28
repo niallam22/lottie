@@ -1,3 +1,7 @@
+todo 
+include the Oauth for github and style the form
+no specific role required for server page whereas client page has a requirement handled with middleware 
+
 Next auth 
 https://www.youtube.com/watch?v=w2h54xz6Ndw&t=353s&ab_channel=DaveGray
 
