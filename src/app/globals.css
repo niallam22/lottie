@@ -2,3 +2,173 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-size: 18px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  padding: 0.25rem 0rem;
+  margin: 0rem;
+  margin-bottom: 0.5rem;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+  body {
+    color: black;
+    background: white;
+  }
+}
+
+.container{
+    display: flex;
+    width: 100%;
+}
+
+.directions {
+  position: absolute;
+  background: black;
+  top: 1rem;
+  right: 1rem;
+  width: 25%;
+  padding: 1rem;
+}
+
+#map {
+  height: 60vh;
+  padding-top: 100px;
+}
+.searchMap {
+    padding-top: 180px;
+    width: 85%;
+}
+
+.marker {
+  padding: 0.5rem;
+  background: black;
+  transition: all 0.3s ease-out;
+  position: relative;
+  width: 100px;
+  border-radius: 5px;
+}
+
+.marker:after {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  font-size: 0.75rem;
+  opacity: 1;
+}
+.marker.highlight:after {
+  opacity: 0;
+  animation: fadeOut 0.5s;
+}
+.marker.raining:after {
+  content: "🌧️";
+}
+.marker.cloudy:after {
+  content: "⛅";
+}
+.marker.sunny:after {
+  content: "☀️";
+}
+
+.marker h2 {
+  margin: 0;
+}
+.marker p {
+  margin: 0;
+}
+
+.highlight {
+  width: 200px;
+  color: white;
+}
+.highlight.raining {
+  background: #457b9d;
+}
+.highlight.cloudy {
+  background: #6d6875;
+}
+.highlight.sunny {
+  background: #ffc300;
+  color: black;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.five-day {
+  opacity: 1;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  animation: fadeIn 1s;
+}
+
+.editing {
+  position: absolute;
+  padding: 1rem;
+  top: 1rem;
+  right: 1rem;
+  width: 20%;
+  min-width: 200px;
+  background: black;
+}
+
+.editing label {
+  font-size: 0.8rem;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.editing input,
+select {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+}
+
+.editing button {
+  padding: 0.5rem;
+}

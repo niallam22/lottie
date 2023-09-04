@@ -1,9 +1,13 @@
 todo 
 include the Oauth for github and style the form
 no specific role required for server page whereas client page has a requirement handled with middleware 
+move these notes to notion
+
 
 Next auth 
 https://www.youtube.com/watch?v=w2h54xz6Ndw&t=353s&ab_channel=DaveGray
+https://www.youtube.com/watch?v=PEMfsqZ2-As&ab_channel=GTCoding
+https://www.youtube.com/watch?v=iPGXk-i-VYU&list=PLRAV69dS1uWR7KF-zV6YPYtKYEHENETyE&ab_channel=HiteshChoudhary
 
 route handler
 in the api/auth/[...nextauth] catch all route nextauth is exported as a GET and POST 
