@@ -1,6 +1,6 @@
 export default function Editing({ weather, update, close }) {
     return (
-      <div className="editing">
+      <div className="editing w-full">
         <h2>Editing {weather.name}</h2>
   
         <label htmlFor="climate">Climate</label>

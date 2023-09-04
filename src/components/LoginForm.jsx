@@ -35,22 +35,24 @@ export default function LoginForm() {
 
   return (
     <div className="grid place-items-center h-screen">
-      <div className="shadow-lg p-5 rounded-lg border-t-4 border-green-400">
-        <h1 className="text-xl font-bold my-4">Login</h1>
+      <div className="shadow-lg p-5 rounded-lg border-t-4 border-pink-300">
+        <h1 className="text-xl text-slate-900 font-bold my-4">Login</h1>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
           <input
             onChange={(e) => setEmail(e.target.value)}
             type="text"
             placeholder="Email"
+            className="border rounded-md"
           />
           <input
             onChange={(e) => setPassword(e.target.value)}
             type="password"
             placeholder="Password"
+            className="border rounded-md"
           />
-          <button className="bg-green-600 text-white font-bold cursor-pointer px-6 py-2">
-            Login
+          <button className="bg-pink-300 text-white font-bold cursor-pointer px-6 py-2">
+            Log in
           </button>
           {error && (
             <div className="bg-red-500 text-white w-fit text-sm py-1 px-3 rounded-md mt-2">

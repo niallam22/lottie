@@ -29,19 +29,19 @@ a {
   box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
   body {
-    color: black;
-    background: white;
+    color: white;
+    background: black;
   }
-}
+} */
 
-.container{
-    display: flex;
-    width: 100%;
+.hero{
+  background: rgb(255,197,236);
+  background: linear-gradient(90deg, rgba(255,197,236,1) 0%, rgba(237,172,210,1) 19%, rgba(255,87,190,1) 100%);
 }
 
 .directions {
@@ -54,12 +54,8 @@ a {
 }
 
 #map {
-  height: 60vh;
+  height: 75vh;
   padding-top: 100px;
-}
-.searchMap {
-    padding-top: 180px;
-    width: 85%;
 }
 
 .marker {

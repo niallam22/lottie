@@ -13,14 +13,15 @@ export default function MyMap({mapOptions, home}) {
 
   return (
     <>
-      <div id="map" />
+      <div id="map" >
       {map && home && <Marker map={map} position={home} >
         <div>
           <FaMapMarker style={{ fontSize: '38px', color: 'red' }} />
         </div>
       </Marker> }
+        {map && <CareHomeMap map={map} home={home}/>}
+      </div>
 
-      {map && <CareHomeMap map={map} home={home} />}
     </>
   );
 }
