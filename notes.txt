@@ -3,6 +3,7 @@ include the Oauth for github and style the form
 no specific role required for server page whereas client page has a requirement handled with middleware 
 move these notes to notion
 
+html rendering inside advanced marker create mini react apps so that when the children change they re-render into the div created and that is being shown as an advanced marker
 
 Next auth 
 https://www.youtube.com/watch?v=w2h54xz6Ndw&t=353s&ab_channel=DaveGray

@@ -5,36 +5,26 @@ import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { useSession } from "next-auth/react";
 import { redirect } from 'next/navigation';
 
-export default function FavouriteCareHome({ careHomeId, userId }) {
+
+export default function FavouriteCareHome({ careHomeId }) {
   const [isFavourite, setIsFavourite] = useState(false);
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const userId = session.user.id
+  console.log('components/favourite userId: ', userId)
+  useEffect(() => {}, [session]); //rerender once session has been fetched
 
   useEffect(() => {
     // Fetch favorite status from the API route when the component mounts
-    const res = await fetch(`/api/favourite?userId=${userId}&careHomeId=${careHomeId}`)
-    .then((response) => response.json())
-    .then((data) => {
-      setIsFavourite(data.isFavourite);
-    })
-    .catch((error) => {
-      console.error('Error fetching favourite status:', error);
-    });
-
-  //   fetch('/api/favourite', {
-  //     method: 'GET',
-  //     headers: {
-  //         'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify({
-  //         userId, careHomeId
-  //     })
-  // }).then((response) => response.json())
-  //     .then((data) => {
-  //     setIsFavourite(data.isFavourite);
-  //     })
-  //     .catch((error) => {
-  //     console.error('Error fetching favourite status:', error);
-  //     })
+    if(session){
+      fetch(`/api/favourite?userId=${session.user.id}&careHomeId=${careHomeId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setIsFavourite(data.isFavourite);
+      })
+      .catch((error) => {
+        console.error('Error fetching favourite status:', error);
+      });
+    }
   }, []);
 
   const handleToggleFavourite = () => {
@@ -43,31 +33,34 @@ export default function FavouriteCareHome({ careHomeId, userId }) {
         redirect('/api/auth/signin?callbackUrl=/search')
     }else{
         const newIsFavourite = !isFavourite;
-
-        // Update the favorite status via the API
-        fetch(`/api/favorites?userId=${userId}&careHomeId=${careHomeId}&isFavourite=${newIsFavourite}`, {
+        
+        fetch('/api/favourite', {
           method: 'PUT',
-          body: JSON.stringify({ isFavourite: newIsFavourite }),
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
           },
-        })
-          .then(() => {
+          body: JSON.stringify({
+            userId, 
+            careHomeId, 
+            newIsFavourite
+          })
+        })        
+          .then((isFavouriteResponse) => {
+            console.log('component/favourite isFavouriteResponse and newIsfavourite', isFavouriteResponse, newIsFavourite)
             setIsFavourite(newIsFavourite);
           })
           .catch((error) => {
             console.error('Error updating favorite status:', error);
           });
     }
-
   };
 
   return (
-    <div onClick={handleToggleFavourite}>
+    <div >
       {isFavourite ? (
-        <AiFillStar style={{ fontSize: '30px', color: 'pink' }} />
+        <AiFillStar onClick={handleToggleFavourite} style={{ fontSize: '30px', color: 'pink' }} />
       ) : (
-        <AiOutlineStar style={{ fontSize: '30px', color: 'pink' }} />
+        <AiOutlineStar onClick={handleToggleFavourite} style={{ fontSize: '30px', color: 'pink' }} />
       )}
     </div>
   );

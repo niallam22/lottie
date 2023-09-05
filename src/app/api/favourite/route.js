@@ -1,61 +1,61 @@
-const mongoose = require('mongoose');
-const Favourite = require('./models/');
-const { NextResponse } = require("next/server");
- 
- export async function GET(request) {
-    const {searchParams} = new URL(request.url) //request has search params (not json)
-    const userId =  searchParams.get('userId')
-    const careHomeId = searchParams.get('careHomeId')
-    
-    Favourite.findOne({ user: userId, careHome: careHomeId })
-  .exec()
-  .then((data) => {
-    const isFavourite = data ? data.isFavourite : false
-  })
-  .catch((error) => {
-    // Handle any errors that occur during the query
-    console.error('Error:', error);
-  });
+import { connectMongoDB } from '@/lib/mongodb';
+import Favourite from '@/models/favourite';
+import mongoose from 'mongoose';
+import { NextResponse } from 'next/server';
 
-    return NextResponse.json({isFavourite})
- }
-
-
-    // to return all search parameter entries not just specified ones
+//check if carehome is favourited by user
+export async function GET(request) {
+    try {
+      const { searchParams } = new URL(request.url);
+      const userId = searchParams.get('userId');
+      const careHomeId = searchParams.get('careHomeId');
+    // to return all search parameter entries not just explicitly specified ones
     // const obj = Object.fromEntries(searchParams.entries())
-    // return NextResponse.json({obj})
-    
-    //const data = await = request.json() //request has json not search parameters 
-    //const {name, email, message} = data
-    // return NextResponse.json({name, email, message})
+      let isFavourite;
+  
+      await connectMongoDB();
+  
+      const data = await Favourite.findOne({ user: userId, careHome: careHomeId });
+  
+      // If document exists, use the value; otherwise, set the default to false
+      isFavourite = data ? data.isFavourite : false;
+  
+      const responseBody = { isFavourite };
 
+      return NextResponse.json(responseBody);
 
-    export async function PUT(request) {
-        const { searchParams } = new URL(request.url);
-        const userId = searchParams.get('userId');
-        const careHomeId = searchParams.get('careHomeId');
-        const isFavourite = searchParams.get('isFavourite');
+    } catch (error) {
+      console.error('Error:', error);
+      return NextResponse.error({ message: 'Error occurred' });
+    }
+  }
+   
+      export async function PUT(request) {
+        try {
+          const data = await request.json();
+          const { userId, careHomeId, newIsFavourite } = data;
       
-        // Use findOneAndUpdate to find or create a document
-        Favourite.findOneAndUpdate(
-          { user: userId, careHome: careHomeId },
-          { isFavourite: isFavourite },
-          { upsert: true, new: true }
-        )
-          .exec()
-          .then((updatedDocument) => {
-            if (updatedDocument) {
-              // Document found or created successfully
-              return NextResponse.json({ message: 'Update successful' });
-            } else {
-              // Handle any unexpected errors here
-              return NextResponse.error({ message: 'Update failed' });
-            }
-          })
-          .catch((error) => {
-            // Handle any errors that occur during the query
-            console.error('Error:', error);
+          await connectMongoDB();
+      
+          const updatedDocument = await Favourite.findOneAndUpdate(
+            { user: userId, careHome: careHomeId },
+            { isFavourite: newIsFavourite },
+            { upsert: true, new: true }
+          );
+      
+          if (updatedDocument) {
+            // Document found or created successfully
+            console.log('api/favourite/route PUT updatedDocument', updatedDocument);
+            const message = { message: 'Update successful' };
+            return NextResponse.json(message);
+          } else {
+            // Handle the case where the document was not updated
             return NextResponse.error({ message: 'Update failed' });
-          });
+          }
+        } catch (error) {
+          // Handle any errors that occur during the entire endpoint execution
+          console.error('Error:', error);
+          return NextResponse.error({ message: 'Update failed' });
+        }
       }
       

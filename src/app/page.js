@@ -9,8 +9,9 @@ import Link from 'next/link';
 
 export default async function Home() {
   const session = await getServerSession(options);
+  console.log('page.js session: ', session)
 
-  if (session) redirect("/search");
+  // if (session) redirect("/search");
   return (
     <div className='hero h-screen flex items-center flex-col sm:flex-row'>
       <div className='w-1/2 flex justify-center flex-col p-4 md:px-10 items-center sm:items-start'>

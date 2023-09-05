@@ -7,57 +7,37 @@ import { AiFillStar  } from 'react-icons/ai';
 import fetchDirections from "@/lib/fetchDirection";
 import { fetchCareHomes } from "@/lib/fetchCareHomes";
 
-
-
-const oldCareHomeData=[
-  {
-    _id: 'asfdas',
-    name: "Bath",
-    position: { lat: 51.3781018, lng: -2.3596827 },
-    description: "Raining",
-    rating: 4.5,
-    cost: '1500',
-  },
-  {
-    _id: 'asfddfsdfgsdfhgsds',
-    name: "Guelph",
-    position: { lat: 52.3781018, lng: -0.3596827 },
-    description: "Cloudy",
-    rating: 4.5,
-    cost: '1500',
-  },
-  {
-    _id: 'asfdaasdfasdfasdfasdfs',
-    name: "Orangeville",
-    position: { lat: 51.8781018, lng: -1.3596827 },
-    description: "Sunny",
-    rating: 4.5,
-    cost: '1500',
-  },
-];
-
 export default function CareHomeMap({ map, home }) {
-  const [data, setData] = useState(careHomeData);
+  const [careHomeData, setCareHomeData] = useState();
   const [highlight, setHighlight] = useState();
   const [editing, setEditing] = useState();
   const [polyline, setPolyline] = useState(null);
   const [durationMins, setDurationMins] = useState(null);
   const [directions, setDirections] = useState();
 
-  const careHomeData = fetchCareHomes()
+
+useEffect(()=>{
+  try {
+    fetchCareHomes().then(data =>{
+      setCareHomeData(data)
+    })
+  } catch (error) {
+    console.log(error)
+  }
+},[])
 
   // Call fetchDirections when home or careHomeData changes
   useEffect(() => {
     if (home) {
-      // Pass care home's position, not the entire careHomeData object
-      const careHome = data.find(item => item._id === editing);
+      // find carehome that is being edited
+      const careHome = careHomeData.find(item => item._id === editing);
       if (careHome) {
-        fetchDirections(careHome.position, home).then(result => {
+        fetchDirections({lat: careHome.lat, lng: careHome.lng}, home).then(result => {
           setDirections(result);
         });
       }
     }
-  }, [home, editing, data]);
+  }, [home, editing, careHomeData]);
 
   //render directions and duration
   useEffect(() => {
@@ -85,9 +65,10 @@ return (
   <>
     {editing && (
       <Editing
-        careHome={data.find(item => item._id === editing)}
+        careHome={careHomeData.find(item => item._id === editing)}
         update={(newCareHomeData) => {
-          setData((existing) => {
+          
+          setCareHomeData((existing) => { 
             return existing.map(item => {
               if (item._id === editing) {
                 return { ...item, ...newCareHomeData };
@@ -96,24 +77,29 @@ return (
             });
           });
         }}
+          // update={(newCareHomeData) => {
+          //   setData((existing) => {// passing callback function to setData gives the existing data
+          //     return { ...existing, [editing]: { ...newCareHomeData } };
+          //   });
+          // }}
         close={() => setEditing(null)}
       />
     )}
 
-    {data.map((careHome) => (
+    {careHomeData && careHomeData.map((careHome) => (
       <Marker
         key={careHome._id}
         map={map}
-        position={careHome.position}
+        position={{lat: careHome.lat, lng: careHome.lng}}
         onClick={() => {
           setEditing(careHome._id);
-          fetchDirections(careHome.position, home);
+          fetchDirections({lat: careHome.lat, lng: careHome.lng}, home);
         }}
       >
         <div
           className={`marker ${careHome.description.toLowerCase()} ${
             highlight === careHome._id || editing === careHome._id ? "highlight" : ""
-          }`}
+          }`} //conditional classes
           onMouseEnter={() => setHighlight(careHome._id)} // Use _id as the unique identifier
           onMouseLeave={() => setHighlight(null)}
         >
@@ -139,7 +125,32 @@ return (
 }
 
 
-
+// const oldCareHomeData=[
+//   {
+//     _id: 'asfdas',
+//     name: "Bath",
+//     position: { lat: 51.3781018, lng: -2.3596827 },
+//     description: "Raining",
+//     rating: 4.5,
+//     cost: '1500',
+//   },
+//   {
+//     _id: 'asfddfsdfgsdfhgsds',
+//     name: "Guelph",
+//     position: { lat: 52.3781018, lng: -0.3596827 },
+//     description: "Cloudy",
+//     rating: 4.5,
+//     cost: '1500',
+//   },
+//   {
+//     _id: 'asfdaasdfasdfasdfasdfs',
+//     name: "Orangeville",
+//     position: { lat: 51.8781018, lng: -1.3596827 },
+//     description: "Sunny",
+//     rating: 4.5,
+//     cost: '1500',
+//   },
+// ];
 
 
 // import { useEffect, useState } from "react";

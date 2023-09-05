@@ -6,8 +6,12 @@ const careHomeSchema = new Schema(
       type: String,
       required: true,
     },
-    position: {
-      type: String,
+    lat: {
+      type: Number,
+      required: true,
+    },
+    lng: {
+      type: Number,
       required: true,
     },
     description: {
@@ -22,7 +26,8 @@ const careHomeSchema = new Schema(
         type: Number,
         required: true,
       },
-    cloudinaryId: {type: String}
+    cloudinaryImgId: {type: String},
+    cloudinaryImgUrl: {type: String},
   },
   { timestamps: true }
 );
