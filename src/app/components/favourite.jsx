@@ -5,7 +5,6 @@ import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { useSession } from "next-auth/react";
 import { redirect } from 'next/navigation';
 
-
 export default function FavouriteCareHome({ careHomeId }) {
   const [isFavourite, setIsFavourite] = useState(false);
   const { data: session, status } = useSession();
@@ -25,7 +24,7 @@ export default function FavouriteCareHome({ careHomeId }) {
         console.error('Error fetching favourite status:', error);
       });
     }
-  }, []);
+  }, [session, careHomeId]);
 
   const handleToggleFavourite = () => {
     // Toggle the isFavourite state

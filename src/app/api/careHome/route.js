@@ -20,9 +20,16 @@ export async function GET() {
 }
 
 export async function POST(req) {
+  
     try {
       // Extract data from the request body
-      const { name, position, description, rating, cost, cloudinaryImgId, cloudinaryImgUrl } = await req.json();
+      const data = await req.formData()
+      const reqObject = Object.fromEntries(data)
+      
+      const { name, position, description, rating, cost, image } = reqObject
+
+      // Upload image to cloudinary
+      
 
       await connectMongoDB();
       // Check if a CareHome document with the same name and position already exists
@@ -31,7 +38,7 @@ export async function POST(req) {
 
       if (existingCareHome) {
         // If a document with the same name and position exists, return an error
-        return NetResponse.json({ message: 'CareHome with the same name and location already exists' }, { status: 400 });
+        return NextResponse.json({ message: 'CareHome with the same name and location already exists' }, { status: 400 });
       }
 
     // Create a new CareHome document
@@ -42,8 +49,9 @@ export async function POST(req) {
     description,
     rating,
     cost,
-    cloudinaryImgId,
-    cloudinaryImgUrl
+    cloudinaryImageUrl: hostedImage?.secure_url,
+    cloudinaryImageId: hostedImage?.public_id,
+    
     });
 
       // Return a success response

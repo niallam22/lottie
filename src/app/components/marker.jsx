@@ -19,7 +19,7 @@ export default function Marker({ map, position, children, onClick }) {
       }
   
       return () => (markerRef.current.map = null);
-    }, []);
+    },[]);
   
     useEffect(() => {
       rootRef.current.render(children);

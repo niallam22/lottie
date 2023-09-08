@@ -60,7 +60,7 @@ useEffect(()=>{
       setPolyline(polyLine);
       setDurationMins(Math.round(directions.routes[0].legs[0].duration.value/60))
     }
-  }, [directions]);
+  }, [directions, map, polyline]);
 return (
   <>
     {editing && (

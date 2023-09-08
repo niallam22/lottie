@@ -26,8 +26,9 @@ const careHomeSchema = new Schema(
         type: Number,
         required: true,
       },
-    cloudinaryImgId: {type: String},
-    cloudinaryImgUrl: {type: String},
+    imagePublicId: {type: String},
+    imageSecureUrl: {type: String},
+    imageVersion: {type: String}
   },
   { timestamps: true }
 );

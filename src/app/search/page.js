@@ -1,4 +1,4 @@
-import SearchMap from "@/components/SearchMap";
+import SearchMap from "@/app/components/SearchMap";
 
 export default function Search() {
   return (

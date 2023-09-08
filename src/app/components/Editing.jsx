@@ -9,7 +9,7 @@ export default function Editing({ careHome, update, close }) {
         <FavouriteCareHome careHomeId={careHome._id} />
         <Image 
         className='px-4'
-        src='/home.svg' 
+        src={careHome.imageSecureUrl ||'/home.svg'} 
         alt="Home drawing"
         width={450}
         height={24}
