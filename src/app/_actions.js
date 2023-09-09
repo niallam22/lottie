@@ -13,6 +13,32 @@ const cloudinaryConfig = cloudinary.config({
   secure: true
 })
 
+// Check if CareHome location already exists
+export async function isExistingCareHome( lat, lng ){
+  try {
+    await connectMongoDB()
+    const existingCareHome = await CareHome.findOne({ lat, lng });    
+    if (existingCareHome) {
+      return {
+        status:'ok',
+        result: true
+      }
+    }else{
+      return{
+        status: 'ok',
+        result: false
+      }
+    }
+  } catch (error) {
+    console.log(error);
+
+    return {
+      status: 'error',
+      message: error,
+    };
+  }
+}
+
 export async function getSignature() {
   const session = await getServerSession(options)
 
@@ -38,7 +64,7 @@ export async function saveToDatabase({
   clientSignature,
   imagePublicId,
   imageSecureUrl,    
-  name,
+  nameLowCase,
   lat,
   lng,
   description,
@@ -62,13 +88,17 @@ export async function saveToDatabase({
     // safe to write to database
     try {
       await connectMongoDB()
-      
-      // Check if CareHome document with same name and position (latitude,longitude) already exists
-      const existingCareHome = await CareHome.findOne({ name, lat, lng });
 
-      if (existingCareHome) {
-        throw new Error('CareHome with the same name and location already exists')
-      }
+
+
+      const name = nameLowCase.includes(' ')
+      ? nameLowCase
+          .split(' ')
+          .map((word) => word[0].toUpperCase() + word.slice(1))
+          .join(' ')
+      : nameLowCase[0].toUpperCase() + nameLowCase.slice(1);
+    
+
 
       // Create a new CareHome document
       await CareHome.create({
@@ -93,7 +123,7 @@ export async function saveToDatabase({
 
       return {
         status: 'error',
-        message: 'An error occurred while saving to the database',
+        message: error,
       };
     }
   }

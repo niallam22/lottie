@@ -46,7 +46,7 @@ a {
 
 .directions {
   position: absolute;
-  background: black;
+  background: rgb(30 41 59);
   top: 1rem;
   right: 1rem;
   width: 25%;
@@ -60,15 +60,17 @@ a {
 
 .marker {
   padding: 0.5rem;
-  background: black;
+  /* background: rgb(15 23 42); */
+  /* color: white; */
   transition: all 0.3s ease-out;
   position: relative;
-  width: 100px;
+  /* width: 100px; */
   border-radius: 5px;
 }
 
 .marker:after {
   position: absolute;
+  /* background: rgb(15 23 42); */
   top: 0.75rem;
   right: 0.75rem;
   font-size: 0.75rem;
@@ -77,8 +79,15 @@ a {
 .marker.highlight:after {
   opacity: 0;
   animation: fadeOut 0.5s;
+  background: rgb(30 41 59);
 }
-.marker.raining:after {
+.marker.highlight .iconNotFavourite{
+  display: none;
+}
+.iconNotFavourite{
+  color: rgb(30 41 59);
+}
+/* .marker.raining:after {
   content: "🌧️";
 }
 .marker.cloudy:after {
@@ -86,7 +95,7 @@ a {
 }
 .marker.sunny:after {
   content: "☀️";
-}
+} */
 
 .marker h2 {
   margin: 0;
@@ -98,17 +107,19 @@ a {
 .highlight {
   width: 200px;
   color: white;
+  background: rgb(30 41 59);
 }
-.highlight.raining {
+/* conditional highlight based on description */
+/* .highlight.nursingHome {
   background: #457b9d;
 }
-.highlight.cloudy {
+.highlight.careHome {
   background: #6d6875;
 }
-.highlight.sunny {
+.highlight.hospital {
   background: #ffc300;
   color: black;
-}
+} */
 
 @keyframes fadeIn {
   0% {

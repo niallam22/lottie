@@ -1,5 +1,6 @@
 import { connectMongoDB } from '@/lib/mongodb';
 import CareHome from '@/models/careHome';
+import Favourite from '@/models/favourite';
 import mongoose from 'mongoose';
 import { NextResponse } from 'next/server';
 
@@ -19,48 +20,3 @@ export async function GET() {
   }
 }
 
-export async function POST(req) {
-  
-    try {
-      // Extract data from the request body
-      const data = await req.formData()
-      const reqObject = Object.fromEntries(data)
-      
-      const { name, position, description, rating, cost, image } = reqObject
-
-      // Upload image to cloudinary
-      
-
-      await connectMongoDB();
-      // Check if a CareHome document with the same name and position already exists
-      const {lat, lng } = position
-      const existingCareHome = await CareHome.findOne({ name, lat, lng });
-
-      if (existingCareHome) {
-        // If a document with the same name and position exists, return an error
-        return NextResponse.json({ message: 'CareHome with the same name and location already exists' }, { status: 400 });
-      }
-
-    // Create a new CareHome document
-    const result = await CareHome.create({
-    name,
-    lat,
-    lng,
-    description,
-    rating,
-    cost,
-    cloudinaryImageUrl: hostedImage?.secure_url,
-    cloudinaryImageId: hostedImage?.public_id,
-    
-    });
-
-      // Return a success response
-      return NextResponse.json({ message: 'CareHome created successfully' }, { status: 201 });
-    } catch (error) {
-      // Handle any errors
-      console.error('Error:', error);
-
-      // Return an error response
-      return NextResponse.json({ message: 'Error creating CareHome' }, { status: 500 });
-    }
-}

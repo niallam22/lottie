@@ -39,7 +39,7 @@ import AsyncSelect from "react-select/async"
     }
 
     return (
-        <AsyncSelect 
+        <AsyncSelect
             loadOptions={loadOptions}
             onChange={handleSelect}
             placeholder='Enter postcode or address'

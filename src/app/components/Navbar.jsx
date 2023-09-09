@@ -1,10 +1,18 @@
 'use client'
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaBars,FaTimes } from 'react-icons/fa';
+import { signOut } from "next-auth/react";
 
 function Navbar() {
   const [navbar, setNavbar] = useState(false);
+  const { data: session, status } = useSession();
+
+  const user = session?.user
+  console.log(user)
+
+  useEffect(() => {}, [session]); //rerender once session has been fetched
   return (
     <div id='navbar' className='h-20 bg-slate-900'>
       <nav  className="w-full bg-slate-900 fixed top-0 left-0 right-0 z-10 h-20">
@@ -37,26 +45,39 @@ function Navbar() {
               }`}
             >
               <ul className="h-screen md:h-auto items-center justify-center md:flex ">
+              <li className="text-xl text-white py-5 md:px-6 text-center  hover:text-pink-300">
+                  <Link href="/" onClick={() => setNavbar(!navbar)}>
+                    Home
+                  </Link>
+                </li>
                 <li className="text-xl text-white py-5 md:px-6 text-center  hover:text-pink-300">
-                  <Link href="#about" onClick={() => setNavbar(!navbar)}>
-                    About
+                  <Link href="/search" onClick={() => setNavbar(!navbar)}>
+                    Search
                   </Link>
                 </li>
-                <li className="text-xl text-white py-5 px-6 text-center  hover:text-pink-300">
-                  <Link href="#blog" onClick={() => setNavbar(!navbar)}>
-                    Blogs
+                {!session && <li className="text-xl text-white py-5 px-6 text-center  hover:text-pink-300">
+                   <Link href="/login" onClick={() => setNavbar(!navbar)}>
+                    Login
                   </Link>
-                </li>
-                <li className="text-xl text-white py-5 px-6 text-center  hover:text-pink-300">
-                  <Link href="#contact" onClick={() => setNavbar(!navbar)}>
-                    Contact
+                </li>}
+                {!session &&<li className="text-xl text-white py-5 px-6 text-center  hover:text-pink-300">
+                   <Link href="/register" onClick={() => setNavbar(!navbar)}>
+                    Register
                   </Link>
-                </li>
-                <li className="text-xl text-white py-5 px-6 text-center  hover:text-pink-300">
-                  <Link href="#projects" onClick={() => setNavbar(!navbar)}>
-                    Projects
+                </li>}
+                {(user?.role === 'admin'|| user?.role === 'manager') && (<li className="text-xl text-white py-5 px-6 text-center  hover:text-pink-300">
+                   <Link href="/homeManager" onClick={() => setNavbar(!navbar)}>
+                    Add home
                   </Link>
-                </li>
+                </li>)}
+                {session && <li className="text-xl text-white py-5 px-6 text-center  hover:text-pink-300">
+                  <Link href="#" onClick={() => {
+                    setNavbar(!navbar)
+                    signOut()
+                    }}>
+                    Logout
+                  </Link>
+                </li>}
               </ul>
             </div>
           </div>

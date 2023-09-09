@@ -3,10 +3,10 @@
 import Places from "./Places";
 import { Wrapper } from "@googlemaps/react-wrapper";
 import Image from 'next/image'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { ArrowUpTrayIcon, XMarkIcon } from '@heroicons/react/24/solid'
-import { getSignature, saveToDatabase } from '../_actions'
+import { getSignature, isExistingCareHome, saveToDatabase } from '../_actions'
 
 //server actions are in _actions.js which makes the private and they are explicitly server side functions that can be called client side components
 //creating signed authenticated request to cloudinary
@@ -25,6 +25,7 @@ export default function CareHomeForm({className}) {
     const [files, setFiles] = useState([]) 
     const [rejected, setRejected] = useState([])
     const [formErrors, setFormErrors] = useState()
+    const formRef = useRef(null);
 
     //useDropZone call onDrop and passes in the accepted/rejected arguments
     const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
@@ -82,7 +83,12 @@ export default function CareHomeForm({className}) {
     costError:  cost >= 0 ? null : 'Cost must be a number greater than 0',
     }
 
-  async function action() {
+    useEffect(() => {
+        // Assign the form element once mounted
+        formRef.current = document.getElementById('careHomeForm');
+      }, []);
+
+    async function action() {
     setLoading(true)
     setFormErrors(Object.values(error).filter(x => x !== null))
     const file = files[0]
@@ -103,16 +109,25 @@ export default function CareHomeForm({className}) {
     formData.append('timestamp', timestamp)
     formData.append('folder', 'care_homes')
 
+    const {lat,lng} = home
+
+    //check if care home exists in DB already
+    const isExisting = await isExistingCareHome(lat, lng)
+    if(isExisting?.result=== true){
+        alert('Care home at that location already exists')
+        setLoading(false);
+        return
+    }else if(isExisting?.status === 'error'){
+        setLoading(false);
+        console.log(error)
+    }
+
     // upload to cloudinary with signature
     const endpoint = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_URL
     const data = await fetch(endpoint, {
       method: 'POST',
       body: formData
     }).then(res => res.json())
-
-    console.log('careHomeForm.jsx cloudinary res data: ', data)
-
-    const {lat,lng} = home
     
     // write to database with server action (instead of api)
     const response = await saveToDatabase({
@@ -120,7 +135,7 @@ export default function CareHomeForm({className}) {
       clientSignature: data?.signature,
       imagePublicId: data?.public_id,
       imageSecureUrl: data?.secure_url,
-      name: name,
+      nameLowCase: name,
       lat: lat,
       lng: lng,
       description: description,
@@ -130,9 +145,12 @@ export default function CareHomeForm({className}) {
 
     if (response.status === 'success') {
         console.log("Message sent successfully");
+        formRef.current.reset();
+        removeAll()
         setLoading(false);
 
     }else {
+        alert(response.message)
         console.log("Error sending message");
         setLoading(false);
     }
@@ -142,7 +160,7 @@ export default function CareHomeForm({className}) {
         <div className="w-screen">
             <div className="w-3/5 mx-auto rounded-lg border-2 border-solid border-slate-900 my-10">
 
-                <form action={action} 
+                <form action={action} id="careHomeForm"
                 // onSubmit={handleSubmit} 
                 className="p-5">
                     <div>
@@ -190,24 +208,23 @@ export default function CareHomeForm({className}) {
                         {/* Preview */}
                         <section className='mt-10'>
                             <div className='flex gap-4'>
-                            <h2 className='title text-3xl font-semibold'>Preview</h2>
                             <button
                                 type='button'
                                 onClick={removeAll}
-                                className='mt-1 rounded-md border border-rose-400 px-3 text-[12px] font-bold uppercase tracking-wider text-stone-500 transition-colors hover:bg-rose-400 hover:text-white'
+                                className='mt-1 rounded-md border border-rose-400 p-3 text-[12px] font-bold uppercase tracking-wider text-stone-500 transition-colors hover:bg-rose-400 hover:text-white'
                             >
                                 Remove all files
                             </button>
-                            <button
+                            {/* <button
                                 type='submit'
                                 className='ml-auto mt-1 rounded-md border border-purple-400 px-3 text-[12px] font-bold uppercase tracking-wider text-stone-500 transition-colors hover:bg-purple-400 hover:text-white'
                             >
                                 Upload to Cloudinary
-                            </button>
+                            </button> */}
                             </div>
 
                             {/* Accepted files */}
-                            <h3 className='title mt-10 border-b pb-3 text-lg font-semibold text-stone-600'>
+                            <h3 className='title mt-10 border-b pb-3 text-slate-800 font-bold'>
                             Accepted Files
                             </h3>
                             <ul className='mt-6 grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6'>
@@ -238,7 +255,7 @@ export default function CareHomeForm({className}) {
                             </ul>
 
                             {/* Rejected Files */}
-                            <h3 className='title mt-24 border-b pb-3 text-lg font-semibold text-stone-600'>
+                            <h3 className='title mt-24 border-b pb-3 font-bold text-slate-800'>
                             Rejected Files
                             </h3>
                             <ul className='mt-6 flex flex-col'>
@@ -274,7 +291,7 @@ export default function CareHomeForm({className}) {
                         <Wrapper
                             apiKey={process.env.NEXT_PUBLIC_MAP_API_KEY}
                             version="beta"
-                            libraries={["places"]}
+                            libraries={["marker","places"]}
                         >
                         <Places
                             setHome={(position) => {
