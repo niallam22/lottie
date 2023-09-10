@@ -16,7 +16,7 @@ function Navbar() {
   return (
     <div id='navbar' className='h-20 bg-slate-900'>
       <nav  className="w-full bg-slate-900 fixed top-0 left-0 right-0 z-10 h-20">
-        <div className="justify-between mx-auto lg:max-w-7xl md:items-center md:flex">
+        <div className="w-full justify-between l md:items-center md:flex">
           <div>
             <div className="flex items-center justify-between pt-5 md:block px-8">
               {/* LOGO */}

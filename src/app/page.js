@@ -12,7 +12,7 @@ export default async function Home() {
 
   return (
     <div className='hero h-screen flex items-center flex-col sm:flex-row'>
-      <div className='w-1/2 flex justify-center flex-col p-4 md:px-10 items-center sm:items-start'>
+      <div className='w-1/2 flex justify-center flex-col p-4 sm:px-10 items-center sm:items-start'>
       <h1 className='lg:text-6xl md:text-4xl sm:text-xl font-bold'>Find a care home<br/>that cares</h1>
       <div>
       <Link href="/search">
