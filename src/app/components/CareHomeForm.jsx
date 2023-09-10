@@ -144,14 +144,14 @@ export default function CareHomeForm({className}) {
     })
 
     if (response.status === 'success') {
-        console.log("Message sent successfully");
+        console.log("Form submitted successfully");
         formRef.current.reset();
         removeAll()
         setLoading(false);
 
     }else {
         alert(response.message)
-        console.log("Error sending message");
+        console.log("Error submitting form");
         setLoading(false);
     }
   }
@@ -195,7 +195,7 @@ export default function CareHomeForm({className}) {
                         >
                             {/* getInputProps for input area type='file' from useDropeZone*/}
                             <input {...getInputProps({ name: 'file' })} />
-                            <div className='flex flex-col items-center justify-center gap-4'>
+                            <div className='flex flex-col items-center justify-center gap-4 bg-gray-50 py-4'>
                             <ArrowUpTrayIcon className='h-5 w-5 fill-current' />
                             {isDragActive ? (
                                 <p>Drop the files here ...</p>
@@ -224,12 +224,12 @@ export default function CareHomeForm({className}) {
                             </div>
 
                             {/* Accepted files */}
-                            <h3 className='title mt-10 border-b pb-3 text-slate-800 font-bold'>
+                            <h3 className='title mt-10 border-b text-slate-800 font-bold'>
                             Accepted Files
                             </h3>
-                            <ul className='mt-6 grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6'>
+                            <ul className='mt-6 grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 '>
                             {files.map(file => (
-                                <li key={file.name} className='relative h-32 rounded-md shadow-lg'>
+                                <li key={file.name} className='relative h-32 rounded-md shadow-lg '>
                                 <Image
                                     src={file.preview}
                                     alt={file.name}
@@ -255,7 +255,7 @@ export default function CareHomeForm({className}) {
                             </ul>
 
                             {/* Rejected Files */}
-                            <h3 className='title mt-24 border-b pb-3 font-bold text-slate-800'>
+                            <h3 className='title mt-24 border-b font-bold text-slate-800'>
                             Rejected Files
                             </h3>
                             <ul className='mt-6 flex flex-col'>
@@ -284,7 +284,7 @@ export default function CareHomeForm({className}) {
                         </section>
 
                     </div>
-                    <div className="w-full flex flex-col my-4">
+                    <div className="w-full flex flex-col my-4 mt-6s">
                         <label className="font-bold text-slate-800" htmlFor="location">
                             Location
                         </label>
@@ -351,7 +351,7 @@ export default function CareHomeForm({className}) {
                         type="submit"
                         disabled={loading}
                         className="px-4 py-2 w-40 disabled:bg-gray-400 disabled:text-gray-100 text-white font-medium mt-4 hover:text-pink-300 bg-slate-900 rounded-lg">
-                        Send Message
+                        Submit
                     </button>
                 </form>
             </div>

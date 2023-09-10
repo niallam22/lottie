@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -26,8 +26,8 @@ export default function LoginForm() {
         setError("Invalid Credentials");
         return;
       }
-
-      router.replace("dashboard");
+      // redirect('search')
+      router.replace("search");
     } catch (error) {
       console.log(error);
     }

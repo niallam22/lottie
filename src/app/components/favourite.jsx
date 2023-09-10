@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 
-export default function FavouriteCareHome({ careHomeId }) {
+export default function FavouriteCareHome({ careHomeId, className}) {
   const [isFavourite, setIsFavourite] = useState(false);
   const { data: session, status } = useSession();
 
@@ -60,12 +60,12 @@ export default function FavouriteCareHome({ careHomeId }) {
     <div >
       {session? 
         isFavourite ? (
-          <AiFillStar onClick={handleToggleFavourite} style={{ fontSize: '30px', color: 'pink' }} />
+          <AiFillStar onClick={handleToggleFavourite} className={`${className}`}/>
         ) : (
-          <AiOutlineStar onClick={handleToggleFavourite} style={{ fontSize: '30px', color: 'pink' }} />
+          <AiOutlineStar onClick={handleToggleFavourite} className={`${className}`}/>
         ) :
         <Link href='/login'>
-            <AiOutlineStar style={{ fontSize: '30px', color: 'pink' }} />
+            <AiOutlineStar className={`${className}`} />
         </Link>
       }
     </div>

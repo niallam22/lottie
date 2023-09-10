@@ -147,9 +147,9 @@ a {
 
 .five-day {
   opacity: 1;
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
+  /* position: absolute; */
+  /* top: 1rem;
+  right: 1rem; */
   animation: fadeIn 1s;
 }
 

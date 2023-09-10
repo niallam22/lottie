@@ -6,7 +6,7 @@ import { options } from "../api/auth/[...nextauth]/options";
 export default async function Register() {
   const session = await getServerSession(options);
 
-  if (session) redirect("/dashboard");
+  if (session) redirect("/search");
 
   return <RegisterForm />;
 }

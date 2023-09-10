@@ -123,14 +123,16 @@ return (
           {highlight === careHome._id || editing === careHome._id ? (     
             <div className="careHomeInfo">
               <h2>{careHome.name}</h2>
-              <div>{'£' + careHome.cost + '/wk'}</div>
+              <div>{'Cost: £ ' + careHome.cost + '/wk'}</div>
               <div className="duration">
-                <p>Duration: {durationMins ? durationMins + 'mins' : 'enter location'}</p>
+                <p>Duration: {durationMins && editing === careHome._id ? durationMins + 'mins' : 'select location'}</p>
               </div>
-              <div className="five-day">
-                <p>{careHome.rating}
+              <div className="absolute top-4 right-1">
+                <div className="flex">
+                  <span className="text-base px-1">{careHome.rating + '/5'}</span>
                   <AiFillStar style={{ fontSize: '30px', color: 'pink' }}/>
-                </p>
+                </div>
+
               </div>
             </div>
           ) : null}
