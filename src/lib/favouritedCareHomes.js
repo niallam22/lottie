@@ -1,6 +1,6 @@
 export async function favouritedCareHomes() {
     try {
-      const response = await fetch('http://localhost:3000/api/careHome') // /api/careHomes'); // Replace with your API endpoint
+      const response = await fetch('api/careHome') // /api/careHomes'); // Replace with your API endpoint
       if (!response.ok) {
         throw new Error('Failed to fetch care homes');
       }
