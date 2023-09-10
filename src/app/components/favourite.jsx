@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { useSession } from "next-auth/react";
 import { redirect } from 'next/navigation';
+import { isFavourited } from '@/lib/isFavourited';
 import Link from 'next/link';
 
 export default function FavouriteCareHome({ careHomeId, className}) {
@@ -17,11 +18,11 @@ export default function FavouriteCareHome({ careHomeId, className}) {
   useEffect(() => {
     // Fetch favorite status from the API route when the component mounts
     if(session){
-      fetch(`/api/favourite/isFavourite?userId=${session.user.id}&careHomeId=${careHomeId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setIsFavourite(data.isFavourite);
-      })
+      const userId = session.user.id
+
+      isFavourited(userId, careHomeId)
+      .then(data => setIsFavourite(data))
+
       .catch((error) => {
         console.error('Error fetching favourite status:', error);
       });
@@ -47,7 +48,7 @@ export default function FavouriteCareHome({ careHomeId, className}) {
           })
         })        
           .then((isFavouriteResponse) => {
-            console.log('component/favourite isFavouriteResponse and newIsfavourite', isFavouriteResponse, newIsFavourite)
+            // console.log('component/favourite isFavouriteResponse and newIsfavourite', isFavouriteResponse, newIsFavourite)
             setIsFavourite(newIsFavourite);
           })
           .catch((error) => {

@@ -23,6 +23,8 @@ export default function CareHomeMap({ map, home }) {
 
   useEffect(() => {}, [session]); //rerender once session has been fetched
 
+  const handleClick = 
+
 
   useEffect(()=>{
     try {
@@ -46,8 +48,12 @@ export default function CareHomeMap({ map, home }) {
       // find carehome that is being edited
       const careHome = careHomeData.find(item => item._id === editing);
       if (careHome) {
-        fetchDirections({lat: careHome.lat, lng: careHome.lng}, home).then(result => {
+        fetchDirections({lat: careHome.lat, lng: careHome.lng}, home)
+        .then(result => {
           setDirections(result);
+        })
+        .catch(error => {
+          console.log("Error fetching directions", error);
         });
       }
     }
@@ -105,9 +111,14 @@ return (
         key={careHome._id}
         map={map}
         position={{lat: careHome.lat, lng: careHome.lng}}
-        onClick={() => {
+        onClick={async () => {
           setEditing(careHome._id);
-          fetchDirections({lat: careHome.lat, lng: careHome.lng}, home);
+          try {
+            await fetchDirections({lat: careHome.lat, lng: careHome.lng}, home)
+          } catch (error) {
+            console.log('Error fetching directions', error);
+          }
+          ;
         }}
       >
         <div
