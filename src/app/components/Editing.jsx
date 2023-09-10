@@ -5,12 +5,11 @@ export default function Editing({ careHome, update, close }) {
 
     return (
       <div className="editing w-full bg-slate-900">
-        <h2 className="text-pink-300 font-bold">{careHome.name}</h2>
-        <div className="flex justify-end pb-1">
-          <span className='text-pink-300 text-sm self-end'>Save</span>
+                <div className="flex justify-end pb-1">
+          <span className='text-pink-300 text-sm self-center px-1'>Save</span>
           <FavouriteCareHome careHomeId={careHome._id} className='text-pink-300 text-3xl' />
         </div>
-        
+        <h2 className="text-pink-300 font-bold">{careHome.name}</h2>
         <Image 
         className=''
         src={careHome.imageSecureUrl ||'/home.svg'} 

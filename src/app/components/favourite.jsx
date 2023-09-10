@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
+import { BsBookmark, BsFillBookmarkHeartFill } from 'react-icons/bs';
+
 import { useSession } from "next-auth/react";
 import { redirect } from 'next/navigation';
 import { isFavourited } from '@/lib/isFavourited';
@@ -61,12 +62,13 @@ export default function FavouriteCareHome({ careHomeId, className}) {
     <div >
       {session? 
         isFavourite ? (
-          <AiFillStar onClick={handleToggleFavourite} className={`${className}`}/>
+          
+          <BsFillBookmarkHeartFill onClick={handleToggleFavourite} className={`${className}`}/>
         ) : (
-          <AiOutlineStar onClick={handleToggleFavourite} className={`${className}`}/>
+          <BsBookmark onClick={handleToggleFavourite} className={`${className}`}/>
         ) :
         <Link href='/login'>
-            <AiOutlineStar className={`${className}`} />
+            <BsBookmark className={`${className}`} />
         </Link>
       }
     </div>
