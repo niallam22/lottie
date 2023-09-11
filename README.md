@@ -24,7 +24,7 @@ This is a full-stack Next.js 13 project built with the following features:
 - User authentication with password encryption to secure user credentials
 - Role based access (with NextAuth middleware) protects routes based on user status e.g. admin, manager, signed in user
 
-## Optimisations and future features
+## Optimisations and future features
 - Page for users to view favourited homes
 - Dynamic markers to higlight favourited homes on the map
 - List view for carehomes
@@ -34,6 +34,7 @@ This is a full-stack Next.js 13 project built with the following features:
 - Origin control to protect API routes from foreign domain requests
 - Request limiting
 - Cross-browser testing
+- apply ISR to map to display newly add care home data
 
 
 ## Getting Started
