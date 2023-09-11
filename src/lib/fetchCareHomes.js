@@ -1,6 +1,6 @@
 export async function fetchCareHomes(userId) {
     try {
-      const response = await fetch('api/careHome');
+      const response = await fetch('api/careHome',{next:{revalidate: 10}});
       if (!response.ok) {
         throw new Error('Failed to fetch care homes');
       }
