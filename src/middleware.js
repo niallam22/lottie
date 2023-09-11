@@ -2,7 +2,6 @@
 import { withAuth } from "next-auth/middleware"
 import { NextResponse } from "next/server"
 
-
 export default withAuth(
     // `withAuth` augments `Request` with the user's token.
     function middleware(request) {
