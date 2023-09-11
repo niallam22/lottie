@@ -31,6 +31,9 @@ This is a full-stack Next.js 13 project built with the following features:
 - Apply marker clustering to improve map readability 
 - Admin interface to view and manage (edit/delete) care home information
 - Create site content and map to support SEO
+- Origin control to protect API routes from foreign domain requests
+- Request limiting
+- Cross-browser testing
 
 
 ## Getting Started
