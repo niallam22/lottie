@@ -37,7 +37,7 @@ export default function SearchMap() {
           }}
         />
         <div className="font-bold py-2 ">
-          Tip: Select a carehome on the map to view the journey and duration
+          Tip: Enter a location and select a carehome on the map to view the journey and duration
         </div>
       </div>
       <MyMap mapOptions={mapOptions} home={home} />
