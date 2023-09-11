@@ -1,4 +1,37 @@
+# Lottie homes
+
+A demo platform to search for care homes. This project was inspired by Lottie.org.
+
+### Link to project: [Lottie Homes](https://lottiehome.vercel.app/)
+![Searching care homes](lottie-readme.gif?raw=true "Searching care homes")
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+## About this project
+
+This is a full-stack Next.js 13 project built with the following features:
+
+- Address to geographic coordinate search, powered by google maps api and react-select
+- Themed map with interactive markers to provide relevant information with a smooth and intuitive user experience
+- Dynamically generated/displayed user directions and journey information
+- Pop-up modal displaying care home information
+- Bookmarking feature to save/favourite care homes with protected REST API
+- New care home submission form with drag and drop input fields, image previews and data validation
+- Next server actions to handle form submission i.e. cloudinary signature auth, image upload and saving to database 
+- Responsive and component based design to ensure customisability, reusability and smooth user experience
+- Dynamic and mobile friendly navigation menue that displays links based on user status
+- Intuitive login, register and logout pages integrated with 'redirects' and callback urls to create a cohesive user experience 
+- User authentication with password encryption to secure user credentials
+- Role based access (with NextAuth middleware) protects routes based on user status e.g. admin, manager, signed in user
+
+## Optimisations and future features
+- Page for users to view favourited homes
+- Dynamic markers to higlight favourited homes on the map
+- List view for carehomes
+- Apply marker clustering to improve map readability 
+- Admin interface to view and manage (edit/delete) care home information
+- Create site content and map to support SEO
+
 
 ## Getting Started
 
