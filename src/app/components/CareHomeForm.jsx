@@ -17,7 +17,7 @@ import { getSignature, isExistingCareHome, saveToDatabase } from '../_actions'
 
 export default function CareHomeForm({className}) {
 	const [loading, setLoading] = useState(false);
-    const [home, setHome] = useState('');
+    const [home, setHome] = useState(null);
     const [name, setName] = useState('')
     const [description, setDecscription] = useState('')
     const [rating, setRating] = useState(null)
@@ -81,6 +81,7 @@ export default function CareHomeForm({className}) {
     descriptionError: description.match(/[a-z]/gi) || description=== '' ?null : 'Description must include text',
     ratingError:  rating <= 5 && rating >= 0 ? null : 'Rating must be between 0-5',
     costError:  cost >= 0 ? null : 'Cost must be a number greater than 0',
+    locationError: home ? null : 'Location required'
     }
 
     useEffect(() => {
@@ -109,49 +110,62 @@ export default function CareHomeForm({className}) {
     formData.append('timestamp', timestamp)
     formData.append('folder', 'care_homes')
 
-    const {lat,lng} = home
 
+    
+
+    try {
     //check if care home exists in DB already
-    const isExisting = await isExistingCareHome(lat, lng)
-    if(isExisting?.result=== true){
-        alert('Care home at that location already exists')
+    if(home){
+        const {lat,lng} = home
+        const isExisting = await isExistingCareHome(lat, lng)
+        if(isExisting?.result=== true){
+            alert('Care home at that location already exists')
+            setLoading(false);
+            return
+        }else if(isExisting?.status === 'error'){
+            setLoading(false);
+            console.log(error)
+        }
+    
+        // upload to cloudinary with signature
+        const endpoint = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_URL
+        const data = await fetch(endpoint, {
+          method: 'POST',
+          body: formData
+        }).then(res => res.json())
+        
+        // write to database with server action (instead of api)
+        const response = await saveToDatabase({
+          imageVersion: data?.version,
+          clientSignature: data?.signature,
+          imagePublicId: data?.public_id,
+          imageSecureUrl: data?.secure_url,
+          nameLowCase: name,
+          lat: lat,
+          lng: lng,
+          description: description,
+          rating: rating,
+          cost: cost
+        })
+        if (response.status === 'success') {
+            console.log("Form submitted successfully");
+            formRef.current.reset();
+            removeAll()
+            setLoading(false);
+    
+        }else {
+            alert(response.message)
+            console.log("Error submitting form");
+            setLoading(false);
+        }
+    
+    }else {
+        console.log("Error no location submitted");
         setLoading(false);
-        return
-    }else if(isExisting?.status === 'error'){
-        setLoading(false);
-        console.log(error)
     }
 
-    // upload to cloudinary with signature
-    const endpoint = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_URL
-    const data = await fetch(endpoint, {
-      method: 'POST',
-      body: formData
-    }).then(res => res.json())
-    
-    // write to database with server action (instead of api)
-    const response = await saveToDatabase({
-      imageVersion: data?.version,
-      clientSignature: data?.signature,
-      imagePublicId: data?.public_id,
-      imageSecureUrl: data?.secure_url,
-      nameLowCase: name,
-      lat: lat,
-      lng: lng,
-      description: description,
-      rating: rating,
-      cost: cost
-    })
-
-    if (response.status === 'success') {
-        console.log("Form submitted successfully");
-        formRef.current.reset();
-        removeAll()
-        setLoading(false);
-
-    }else {
-        alert(response.message)
-        console.log("Error submitting form");
+    } catch (error) {
+        console.log("Error",error);
         setLoading(false);
     }
   }
@@ -181,7 +195,6 @@ export default function CareHomeForm({className}) {
                             onChange={e => setName(e.target.value)}
                         />
                         <div style={{color: 'red'}}>{error.nameError}</div>
-                        <div style={{color: 'red'}}>{error.nameError2}</div>
                     </div>
                     <div className="w-full flex flex-col my-4">
                         <label className="font-bold text-slate-800" htmlFor="image">
@@ -299,6 +312,7 @@ export default function CareHomeForm({className}) {
                             }}
                         />
                         </Wrapper>
+                        <div style={{color: 'red'}}>{error.locationError}</div>
                     </div>
                     <div>
                         <label className="font-bold text-slate-800" htmlFor="description">
