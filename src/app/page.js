@@ -12,8 +12,8 @@ export default async function Home() {
 
   return (
     <div className='hero h-screen flex items-center flex-col sm:flex-row'>
-      <div className='w-1/2 flex justify-center flex-col p-4 sm:px-10 items-center sm:items-start'>
-      <h1 className='lg:text-6xl md:text-4xl sm:text-xl font-bold'>Find a care home<br/>that cares</h1>
+      <div className='sm:w-1/2 w-3/4 flex justify-center flex-col p-4 sm:px-10 items-start '>
+      <h1 className='lg:text-6xl md:text-4xl text-2xl font-bold'>Find a care home<br/>that cares</h1>
       <div>
       <Link href="/search">
           <button className='bg-slate-900 text-white p-2 rounded-lg hover:text-pink-300'>Search homes</button>
@@ -21,7 +21,7 @@ export default async function Home() {
       </div>
       </div>
 
-      <div className='w-1/2 flex items-center'>
+      <div className='sm:w-1/2 w-7/8 flex items-center'>
         <Image 
         className='px-4'
         src='/home.svg' 

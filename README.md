@@ -34,7 +34,6 @@ This is a full-stack Next.js 13 project built with the following features:
 - Origin control to protect API routes from foreign domain requests
 - Request limiting
 - Cross-browser testing
-- apply ISR to map to display newly add care home data
 
 
 ## Getting Started

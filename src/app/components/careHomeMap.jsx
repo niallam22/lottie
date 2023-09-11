@@ -23,20 +23,13 @@ export default function CareHomeMap({ map, home }) {
 
   useEffect(() => {}, [session]); //rerender once session has been fetched
 
-  const handleClick = 
-
 
   useEffect(()=>{
     try {
-      if(userId){
-        fetchCareHomes(userId).then(data =>{
-          setCareHomeData(data)
-        })
-      } else { 
         fetchCareHomes().then(data =>{
           setCareHomeData(data)
         })
-      }
+
     } catch (error) {
       console.log(error)
     }

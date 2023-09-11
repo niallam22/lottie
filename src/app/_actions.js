@@ -89,8 +89,6 @@ export async function saveToDatabase({
     try {
       await connectMongoDB()
 
-
-
       const name = nameLowCase.includes(' ')
       ? nameLowCase
           .split(' ')
@@ -98,8 +96,6 @@ export async function saveToDatabase({
           .join(' ')
       : nameLowCase[0].toUpperCase() + nameLowCase.slice(1);
     
-
-
       // Create a new CareHome document
       await CareHome.create({
         name,
