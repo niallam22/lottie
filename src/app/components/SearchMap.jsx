@@ -25,7 +25,7 @@ export default function SearchMap() {
     >
       <div className="p-12 my-6 border-solid rounded-3xl border-slate-900 border-2 flex flex-col">
         <div>
-          <h2 className=" md:text-4xl sm:text-xl font-bold text-pink-300">Search care homes</h2>
+          <h2 className=" md:text-4xl text-xl font-bold text-pink-300">Search care homes</h2>
         </div>
         <Places
           setHome={(position) => {
@@ -36,7 +36,7 @@ export default function SearchMap() {
             });
           }}
         />
-        <div className="font-bold py-2 ">
+        <div className="font-bold py-2 text-lg">
           Tip: Enter a location and select a carehome on the map to view the journey and duration
         </div>
       </div>
