@@ -103,7 +103,9 @@ a {
 .marker p {
   margin: 0;
 }
-
+.iconNotFavourite{
+  margin-bottom: -0.5rem ;
+}
 .highlight {
   width: 200px;
   color: white;
@@ -147,9 +149,9 @@ a {
 
 .five-day {
   opacity: 1;
-  /* position: absolute; */
-  /* top: 1rem;
-  right: 1rem; */
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
   animation: fadeIn 1s;
 }
 

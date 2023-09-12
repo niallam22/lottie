@@ -110,9 +110,6 @@ export default function CareHomeForm({className}) {
     formData.append('timestamp', timestamp)
     formData.append('folder', 'care_homes')
 
-
-    
-
     try {
     //check if care home exists in DB already
     if(home){
@@ -147,14 +144,14 @@ export default function CareHomeForm({className}) {
           rating: rating,
           cost: cost
         })
-        if (response.status === 'success') {
+        if (response?.status === 'success') {
             console.log("Form submitted successfully");
             formRef.current.reset();
             removeAll()
             setLoading(false);
     
         }else {
-            alert(response.message)
+            alert(response?.message)
             console.log("Error submitting form");
             setLoading(false);
         }

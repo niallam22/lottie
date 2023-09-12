@@ -8,6 +8,7 @@ import { fetchCareHomes } from "@/lib/fetchCareHomes";
 import { useSession } from "next-auth/react";
 import { AiFillStar, AiOutlineStar  } from 'react-icons/ai';
 import { FaMapMarker } from "react-icons/fa";
+import { getCareHomes } from '../_actions'
 
 
 export default function CareHomeMap({ map, home }) {
@@ -18,18 +19,20 @@ export default function CareHomeMap({ map, home }) {
   const [durationMins, setDurationMins] = useState(null);
   const [directions, setDirections] = useState();
   const { data: session, status } = useSession();
-
+  
   const userId = session?.user.id
 
   useEffect(() => {}, [session]); //rerender once session has been fetched
 
-
   useEffect(()=>{
     try {
-        fetchCareHomes().then(data =>{
+        getCareHomes().then(data =>{
           setCareHomeData(data)
         })
 
+        // fetchCareHomes().then(data =>{
+        //   setCareHomeData(data)
+        // })
     } catch (error) {
       console.log(error)
     }
