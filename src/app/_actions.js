@@ -97,7 +97,7 @@ export async function saveToDatabase({
       : nameLowCase[0].toUpperCase() + nameLowCase.slice(1);
     
       // Create a new CareHome document
-      await CareHome.create({
+      const result = await CareHome.create({
         name,
         lat,
         lng,
@@ -127,6 +127,22 @@ export async function saveToDatabase({
     return {
       status: 'error',
       message: 'User is not authorised',
-    };
+    }
   } 
+}
+
+export async function getCareHomes(){
+  try {
+    await connectMongoDB();
+    const careHomes = await CareHome.find();
+    console.log('api/carehome careHomes: ',careHomes);
+    // Return the list of care homes in the response
+    return careHomes;
+  } catch (error) {
+    // Handle any errors that occur during the query
+    console.error('Error:', error);
+    
+    // Return an error response
+    return { message: 'Error fetching care homes' };
+  }
 }

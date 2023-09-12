@@ -9,6 +9,7 @@ export async function GET() {
   try {
     await connectMongoDB();
     const careHomes = await CareHome.find();
+    console.log('api/carehome careHomes: ',careHomes);
     // Return the list of care homes in the response
     return NextResponse.json({ careHomes });
   } catch (error) {
