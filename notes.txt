@@ -1,3 +1,11 @@
+I have created an app to be able to search care homes on a map and add new ones through a form.
+
+Everything works in dev mode but in production the map is not refreshing to include the newly added care homes. I have set a revalidation time of 10s on the fetch for new care homes but i think i need a way to re-render the map and I am not sure how to do it.
+
+The api endpoint runs at build time and after that subsequent requests do not include the new data. Why is that. 
+
+As a solution i used server actions to get the carehome data and return it to the client map component. I am getting an error saying that Only plain objects can be passed to Client Components from Server Components. Objects with toJSON methods are not supported. Convert it manually to a simple value before passing it to props.
+
 todo 
 include the Oauth for github and style the form
 no specific role required for server page whereas client page has a requirement handled with middleware 

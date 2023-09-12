@@ -1,6 +1,6 @@
 # Lottie homes
 
-A demo platform to search for care homes. This project was inspired by Lottie.org.
+A platform to search for care homes. Inspired by and expanding upon the map features at Lottie.org, this project includes a thematic map with interactive markers an intuitive search and directions functionality and many more features.
 
 ### Link to project: [Lottie Homes](https://lottiehome.vercel.app/)
 ![Searching care homes](lottie-readme.gif?raw=true "Searching care homes")
