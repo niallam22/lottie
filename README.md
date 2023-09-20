@@ -36,7 +36,7 @@ This is a full-stack Next.js 13 project built with the following features:
 - Cross-browser testing
 
 ## Bugs and issues
-- Layering issue when highlighted markers overlap because the advanced markers are rendered to separate root elements which fixes the layer they are in 
+- Layering issue when highlighted markers overlap neighbouring markers. The advanced markers are rendered to separate root elements which fixes the layer they are in. This means the render logic has to change so highlighted markers are re-rendered to the top layer.
 
 ## Getting Started
 
