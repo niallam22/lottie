@@ -1,6 +1,6 @@
 # Lottie homes
 
-A platform to search for care homes. Inspired by and expanding upon the map features at Lottie.org, this project includes a thematic map with interactive markers an intuitive search and directions functionality and many more features.
+A platform to search for care homes. This project includes a thematic map with interactive markers an intuitive search and directions functionality and many more features.
 
 ### Link to project: [Lottie Homes](https://lottiehome.vercel.app/)
 ![Searching care homes](lottie-readme.gif?raw=true "Searching care homes")
@@ -30,11 +30,13 @@ This is a full-stack Next.js 13 project built with the following features:
 - List view for carehomes
 - Apply marker clustering to improve map readability 
 - Admin interface to view and manage (edit/delete) care home information
-- Create site content and map to support SEO
+- Create site content and site map to support SEO
 - Origin control to protect API routes from foreign domain requests
 - Request limiting
 - Cross-browser testing
 
+## Bugs and issues
+- Layering issue when highlighted markers overlap because the advanced markers are rendered to separate root elements which fixes the layer they are in 
 
 ## Getting Started
 
