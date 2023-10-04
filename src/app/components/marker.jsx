@@ -6,15 +6,19 @@ export default function Marker({ map, position, children, onClick }) {
     const rootRef = useRef();
     const markerRef = useRef();
 
-    // html rendering inside advanced marker through 'creating mini react apps' so that when the children change they re-render into the div created and that is being shown as an advanced marker
+    // care home data rendering inside advanced marker through 'creating mini react apps' so that when the children change they re-render in the div container created
     useEffect(() => {
-      if (!rootRef.current) {
-        const container = document.createElement("div");
+      if (!rootRef.current) { //only intialise once (in dev mode components are mounted twice)
+        
+        //creates a react root for the virtual dom to render data to the browser DOM
+        
+        const container = document.createElement("div"); //browser DOM node
         rootRef.current = createRoot(container);
   
-        markerRef.current = new google.maps.marker.AdvancedMarkerView({
+        markerRef.current = new google.maps.marker.AdvancedMarkerView({ //single instance of class AdvancedMarkerView
           position,
-          content: container,
+          content: container, //class accepts DOM node container then react DOM renders react code to node
+          zIndex: 100
         });
       }
   
@@ -22,6 +26,7 @@ export default function Marker({ map, position, children, onClick }) {
     },[]);
   
     useEffect(() => {
+      //children (care home data) is rendered to the root node container 
       rootRef.current.render(children);
       markerRef.current.position = position;
       markerRef.current.map = map;
